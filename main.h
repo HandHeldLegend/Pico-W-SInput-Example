@@ -33,6 +33,8 @@ typedef struct
 extern uint8_t device_mac[6];
 extern sinput_storage_s device_storage;
 
+void sinput_app_save_host(uint8_t host_mac[6]);
+
 /* Flash persistence helpers shared by both USB and Bluetooth loops. */
 bool sinput_flash_write(uint8_t *data, uint32_t size, uint32_t page);
 bool sinput_flash_read(uint8_t *out, uint32_t size, uint32_t page);

@@ -198,6 +198,12 @@ bool sinput_api_hook_get_touchpads(sinput_touchpads_s *out)
     return false;
 }
 
+void sinput_app_save_host(uint8_t host_mac[6])
+{
+    memcpy(device_storage.host_mac, host_mac, 6);
+    sinput_flash_write((uint8_t*) &device_storage, SINPUT_STORAGE_SIZE, SINPUT_STORAGE_PAGE);
+}
+
 int main()
 {
     sinput_boot_mode_t boot_mode = sinput_get_boot_mode();

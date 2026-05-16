@@ -177,6 +177,8 @@ static void _sinput_btc_packet_handler(uint8_t packet_type, uint16_t channel, ui
             printf("HCI_EVENT_LINK_KEY_NOTIFICATION\n");
             bd_addr_t addr;
             hci_event_link_key_request_get_bd_addr(packet, addr);
+
+            sinput_app_save_host(addr);
         break;
 
         case HCI_EVENT_USER_CONFIRMATION_REQUEST:
