@@ -1,17 +1,11 @@
 /**
- * @file ns_usb.c
+ * @file sinput_usb.c
  * @brief TinyUSB transport path for the Pico W example.
  *
+ * Copyright (c) 2026 Hand Held Legend, LLC
  * Author: Mitchell Cairns
- * Copyright (c) 2026 Hand Held Legend, LLC.
  *
- * Licensed under the Creative Commons Attribution-NonCommercial 4.0 International
- * License (CC BY-NC 4.0). Non-commercial use with attribution; commercial use
- * requires permission from Hand Held Legend, LLC. Licensing inquiries:
- * support@handheldlegend.com
- * Full terms: https://creativecommons.org/licenses/by-nc/4.0/legalcode
- *
- * SPDX-License-Identifier: CC-BY-NC-4.0
+ * SPDX-License-Identifier: MIT-0
  */
 
 #include "main.h"

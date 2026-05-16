@@ -70,4 +70,4 @@ Demo **face buttons** for input reports use **GP14** and **GP15** (also pull-up,
 
 ## License
 
-Example application sources in this repository are licensed under **CC BY-NC 4.0** (see file headers). **SINPUT-LIB-HID** in `external/SINPUT-LIB-HID` is under its own SPDX license as stated in that subtree.
+This example is licensed under **MIT-0** — see [`LICENSE`](LICENSE). The vendored **SINPUT-LIB-HID** tree under `external/SINPUT-LIB-HID` is also MIT-0 (see that directory’s `LICENSE`). Third-party headers you may keep alongside the project (for example TinyUSB config templates) retain their original notices.
