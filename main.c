@@ -68,7 +68,8 @@ static sinput_boot_mode_t sinput_get_boot_mode(void)
  *
  * The library calls these while building each 64-byte HID input report and when
  * decoding host output commands. Return true from a getter when you write fresh
- * samples into *out; return false to reuse the library's last cached sub-report.
+ * samples into *out; return false to reuse the library's last cached value for
+ * that hook (for get_input, buttons/sticks/triggers are updated together).
  * Keep work light: TinyUSB/BT callbacks may run from tight contexts — defer heavy
  * I²C/SPI IMU reads to a background producer if needed and copy here.
  * ------------------------------------------------------------------------- */
@@ -129,41 +130,34 @@ bool sinput_api_hook_get_power(sinput_power_s *status)
     return true;
 }
 
-bool sinput_api_hook_get_buttons(sinput_buttons_s *out)
+bool sinput_api_hook_get_input(sinput_input_s*out)
 {
     /*
-     * Snapshot GPIO into sinput_buttons_s. Bits match SDL-style cluster names
-     * (south/east/west/north = face buttons). Our demo wires GP14 → south (e.g. “A”),
-     * GP15 → east (“B”); expand with more gpio_get() as your PCB grows.
+     * Fill sinput_input_s: .buttons (GPIO), .joysticks, .triggers in one hook.
+     * Button bits match SDL-style cluster names (south/east/west/north = face).
+     * Demo: GP14 → south (“A”), GP15 → east (“B”); expand with more gpio_get().
      * Pins were pull-up’d in sinput_get_boot_mode(); active-low here.
      */
     memset(out, 0, sizeof(*out));
-    out->south = (gpio_get(SINPUT_A_BUTTON_PIN) == 0);
-    out->east = (gpio_get(SINPUT_B_BUTTON_PIN) == 0);
-    return true;
-}
+    out->buttons.south = (gpio_get(SINPUT_A_BUTTON_PIN) == 0);
+    out->buttons.east = (gpio_get(SINPUT_B_BUTTON_PIN) == 0);
 
-bool sinput_api_hook_get_joysticks(sinput_joysticks_s *out)
-{
     /*
-     * Typical: read dual ADC channels per stick, scale to INT16, apply deadzone/invert
+     * Typical: read dual ADC channels per stick, 12 bit ADC readings, apply deadzone/invert
      * per axis. Centered sticks for this demo so the host sees idle axes.
      */
-    out->left.x = 0;
-    out->left.y = 0;
-    out->right.x = 0;
-    out->right.y = 0;
-    return true;
-}
+    out->joysticks.left.x = 0;
+    out->joysticks.left.y = 0;
+    out->joysticks.right.x = 0;
+    out->joysticks.right.y = 0;
 
-bool sinput_api_hook_get_triggers(sinput_triggers_s *out)
-{
     /*
      * Raw 12-bit domain before packing (library clamps to ~4095). Read hall sensors or
      * ADC on LT/RT, or use digital buttons and map to 0 / MAX.
      */
-    out->left = 0;
-    out->right = 0;
+    out->triggers.left = 0;
+    out->triggers.right = 0;
+    return true;
     return true;
 }
 

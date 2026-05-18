@@ -13,7 +13,10 @@ The library (vendored under `external/SINPUT-LIB-HID`) owns report layouts and p
 
 | Hook | Behavior in this project |
 |------|---------------------------|
-| **Getters** (`sinput_api_hook_get_*`) | Buttons on **GP14** (south / “A”) and **GP15** (east / “B”), centered sticks and triggers, synthetic gyro sweep, static “full battery” power, no touchpads |
+| `sinput_api_hook_get_input` | Buttons on **GP14** (south / “A”) and **GP15** (east / “B”), centered sticks and triggers (one `sinput_input_s` snapshot) |
+| `sinput_api_hook_get_power` | Static “full battery” baseline |
+| `sinput_api_hook_get_motion` | Synthetic gyro sweep (no IMU wired) |
+| `sinput_api_hook_get_touchpads` | Not used (`false`; touchpads disabled in cfg) |
 | **Setters** (`sinput_api_hook_set_*`) | Stores last rumble, haptics, player LED index, and RGB in **static `volatile`** shadows so you can inspect them under a debugger or extend to real drivers |
 
 Production firmware would replace the demo motion source with an IMU, add ADC for sticks/triggers, and drive actuators from the setter hooks instead of only logging state.
